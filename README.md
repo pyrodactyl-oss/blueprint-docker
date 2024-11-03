@@ -12,6 +12,31 @@
 - docker-compose.yml (recommended) can and has been improved over time
   - If you are using this version, download and configure the .env file as well; most if not all configuration can be done through the .env file
 
+### Is this your first time running Wings inside of Docker?
+- One thing to be prepared for is that Wings uses the host system's Docker Engine through the mounted socket; it does not use Docker in Docker.
+- What this means is the directory where you store your data, if you wish to customize it, must be set to the same value for both host and container in the mounts, and then you must make the values in your config.yml match; otherwise the Wings container would see one directory, then when a new container is created that isn't affected by this docker-compose.yml's mounts, it won't see the same directory. Here's an example:
+  - Mount in docker-compose.yml: ``"${BASE_DIR}/:${BASE_DIR}/"``
+  - Let's say, for the purposes of this example, that you set ``BASE_DIR`` in your .env file to **/srv/pterodactyl**. If you want to mount Wings server data in another location, just add any other mount, making sure both sides of the mount match.
+  - Now when you create your node, you would select somewhere inside the mount you made for **Daemon Server File Directory**, e.g. /srv/pterodacty/wings/servers
+  - After Wings runs successfully the first time, more options will appear in your **config.yml** file. They will look like this:
+  - ```
+    root_directory: /var/lib/pterodactyl
+    log_directory: /var/log/pterodactyl
+    data: /srv/pterodactyl/volumes
+    archive_directory: /var/lib/pterodactyl/archives
+    backup_directory: /var/lib/pterodactyl/backups
+    tmp_directory: /tmp/pterodactyl
+    ```
+  - As you can see, only **data** gets set to your configured location. You can make the others match by changing **/var/lib/pterodactyl** to match your base directory, again for the example **/srv/pterodactyl**. Optionally, you can change the log location too if you'd like to keep ***everything*** possible inside one directory, which is one of the benefits of using containers. Once you're done, it may look like:
+  - ```
+    root_directory: /srv/pterodactyl
+    log_directory: /srv/pterodactyl/wings/logs
+    data: /srv/pterodactyl/volumes
+    archive_directory: /srv/pterodactyl/archives
+    backup_directory: /srv/pterodactyl/backups
+    tmp_directory: /tmp/pterodactyl
+    ```
+
 ### Uploading extensions
 Extensions must be placed/dragged into the `extensions` folder.
 
