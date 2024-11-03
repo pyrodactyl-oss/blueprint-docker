@@ -99,7 +99,7 @@ services:
       - "${BASE_DIR}/certs/:/etc/letsencrypt/live:ro"
       - "${BASE_DIR}/logs/:/app/storage/logs"
       - "/var/log/nginx:/var/log/nginx"
-      - "/srv/pterodactyl/extensions/:/blueprint_extensions"
+      - "${BASE_DIR}/extensions/:/blueprint_extensions"
       - "app:/app"
     environment:
       <<: [*panel-environment, *mail-environment]
