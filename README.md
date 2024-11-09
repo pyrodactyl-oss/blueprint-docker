@@ -41,7 +41,7 @@
 Extensions must be placed/dragged into the `extensions` folder.
 
 ### Interacting with Blueprint
-By default, you can only interact with Blueprint by going through the Docker command line, i.e.
+By default, you can only interact with Blueprint by going through the Docker Engine command line, i.e.
 ```bash
 docker compose exec panel blueprint (arguments)
 ```
@@ -71,7 +71,7 @@ Here's a quick example showcasing how you would go about installing extensions o
 
 ### First, we'll install Restic to handle backups
 Why Restic? Compression, de-duplication, and incremental backups. Save on space compared to simply archiving the directory each time.
-The package name is usually `restic`, i.e.
+The package name is usually `restic`, e.g.
 | Operating System                 | Command                                                         |
 |----------------------------------|-----------------------------------------------------------------|
 | Ubuntu / Debian / Linux Mint     | `sudo apt -y install restic`                                    |
