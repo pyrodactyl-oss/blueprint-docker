@@ -64,4 +64,3 @@ jobs:
           push: true
           tags: ${{ env.TAGS }}
           build-args: VERSION_TAG=${{ env.VERSION_TAG }}
-        retry: 3
