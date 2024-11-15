@@ -26,9 +26,14 @@ RUN apk update && apk add --no-cache \
     inotify-tools
 
 # Install yarn and Pterodactyl dependencies, as well as update browserlist
-RUN npm install -g yarn && \
-    yarn && \
-    npx update-browserslist-db@latest
+RUN for i in {1..3}; do \
+        npm install -g yarn && \
+        yarn --network-timeout 120000 && \
+        npx update-browserslist-db@latest && \
+        break || \
+        echo "Attempt $i failed! Retrying..." && \
+        sleep 10; \
+    done
 
 # Download and unzip the latest Blueprint release
 RUN wget $(curl -s https://api.github.com/repos/BlueprintFramework/framework/releases/latest | grep 'browser_download_url' | cut -d '"' -f 4) -O blueprint.zip \

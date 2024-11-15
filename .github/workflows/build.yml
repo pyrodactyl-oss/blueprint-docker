@@ -26,7 +26,6 @@ jobs:
           - v1.11.8
           - v1.11.9
           - v1.11.10
-      max-parallel: 2
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
