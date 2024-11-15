@@ -20,11 +20,12 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - v1.11.5
-          - v1.11.6
-          - v1.11.7
-          - v1.11.9
           - v1.11.10
+          - v1.11.9
+          - v1.11.7
+          - v1.11.6
+          - v1.11.5
+  max-parallel: 2
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -63,3 +64,4 @@ jobs:
           push: true
           tags: ${{ env.TAGS }}
           build-args: VERSION_TAG=${{ env.VERSION_TAG }}
+        retry: 3
