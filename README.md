@@ -115,6 +115,7 @@ docker compose -f /srv/pterodactyl/docker-compose.yml up -d
 ```
 
 # Updating Blueprint in Docker
+- Remember, always [create a backup](<https://github.com/BlueprintFramework/docker?tab=readme-ov-file#first-well-install-restic-to-handle-backups>) before updates
 ## Option 1: Only update Blueprint
 - If you have set the alias we suggested earlier
   ```bash
@@ -139,19 +140,5 @@ docker compose -f /srv/pterodactyl/docker-compose.yml up -d
 - ```bash
     docker compose up -d
   ```
-- Lastly, install your extensions again. Refer to [the examples](<https://github.com/BlueprintFramework/docker?tab=readme-ov-file#example-of-installing-an-extension>).
-- Blueprint will support installing multiple extensions at once in the future, making updates significantly easier. The syntax showcased was ``blueprint -i extension1 extension2 extension3``. Documentation here will be updated when that comes out, but for now you'll have to install each extension again every update. Feel free to automate this with a simple bash script:
-  - Create the script
-    - ```bash
-      cd /srv/pterodactyl && echo -e '#!/bin/bash\n\nfor extension in "$@"\ndo\n    docker compose exec panel blueprint -i "$extension"\ndone' > bulk-install.sh && chmod +x bulk-install.sh
-      ```
-  - The script will be located in the assumed root folder for your compose stack, ``/srv/pterodactyl``. You can use it while in that folder with as many extensions as you want with:
-    - ```bash
-        ./bulk-install.sh extension1 extension2 extension3``
-      ```
-<!-- copyright footer -->
-<br/><br/>
-<p align="center">
-  $\color{#4b4950}{\textsf{© 2024 Emma (prpl.wtf) and Loki}}$
-  <br/><br/><img src="https://github.com/user-attachments/assets/15aa92e8-cef3-420e-ae8e-d0cd83263925"/>
-</p>
+- Lastly, install your extensions again. You can reinstall all of the extensions in your extensions folder with ``blueprint -i *.blueprint``.
+- If any of your extensions' settings are gone after this step, restore from your backup and ask the author of those extensions where persistent data is stored so you can back it up and restore it after each update.
