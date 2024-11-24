@@ -142,3 +142,12 @@ docker compose -f /srv/pterodactyl/docker-compose.yml up -d
   ```
 - Lastly, install your extensions again. You can reinstall all of the extensions in your extensions folder with ``blueprint -i *.blueprint``.
 - If any of your extensions' settings are gone after this step, restore from your backup and ask the author of those extensions where persistent data is stored so you can back it up and restore it after each update.
+
+
+
+<!-- copyright footer -->
+<br/><br/>
+<p align="center">
+  $\color{#4b4950}{\textsf{© 2024 Emma (prpl.wtf) and Loki}}$
+  <br/><br/><img src="https://github.com/user-attachments/assets/15aa92e8-cef3-420e-ae8e-d0cd83263925"/>
+</p>
