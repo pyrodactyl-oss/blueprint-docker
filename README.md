@@ -84,13 +84,13 @@ The package name is usually `restic`, e.g.
 #### Make a directory and script for backups
 ```bash
 mkdir -p /srv/backups/pterodactyl
+export RESTIC_PASSWORD="CHANGE_ME"
 restic init --repo /srv/backups/pterodactyl
-cat <<'EOF' > /srv/backups/backup.sh
+cat <<EOF > /srv/backups/backup.sh
 #!/bin/bash
-
-docker compose -f /srv/pterodactyl/docker-compose.yml down
-restic backup /var/lib/docker/volumes/pterodactyl_app/_data --repo /srv/backups/pterodactyl
-docker compose -f /srv/pterodactyl/docker-compose.yml up -d
+docker compose -f /srv/pterodactyl/docker-compose.yml down panel
+RESTIC_PASSWORD="${RESTIC_PASSWORD}" restic backup /var/lib/docker/volumes/pterodactyl_app/_data --repo /srv/backups/pterodactyl
+docker compose -f /srv/pterodactyl/docker-compose.yml up -d panel
 EOF
 chmod +x /srv/backups/backup.sh
 ```
