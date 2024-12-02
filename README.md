@@ -109,7 +109,7 @@ You're looking for a value for **ID** that looks something like ``46adb587``. **
 ```bash
 docker compose -f /srv/pterodactyl/docker-compose.yml down
 # Clear the directory so the restoration will be clean
-rm -rf /var/lib/docker/volumes/pterodactyl_app/_data
+rm -rf /var/lib/docker/volumes/pterodactyl_app/_data/.[!.]* /var/lib/docker/volumes/pterodactyl_app/_data/*
 # Remember to replace "46adb587" with your actual ID of the snapshot you want to restore
 restic restore 46adb587 -r /srv/backups/pterodactyl -t /var/lib/docker/volumes/pterodactyl_app/_data
 docker compose -f /srv/pterodactyl/docker-compose.yml up -d
