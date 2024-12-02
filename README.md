@@ -89,7 +89,8 @@ restic init --repo /srv/backups/pterodactyl
 cat <<EOF > /srv/backups/backup.sh
 #!/bin/bash
 docker compose -f /srv/pterodactyl/docker-compose.yml down panel
-RESTIC_PASSWORD="${RESTIC_PASSWORD}" restic backup /var/lib/docker/volumes/pterodactyl_app/_data --repo /srv/backups/pterodactyl
+cd /var/lib/docker/volumes/pterodactyl_app/_data
+RESTIC_PASSWORD="${RESTIC_PASSWORD}" restic backup . -r /srv/backups/pterodactyl
 docker compose -f /srv/pterodactyl/docker-compose.yml up -d panel
 EOF
 chmod +x /srv/backups/backup.sh
@@ -110,7 +111,7 @@ docker compose -f /srv/pterodactyl/docker-compose.yml down
 # Clear the directory so the restoration will be clean
 rm -rf /var/lib/docker/volumes/pterodactyl_app/_data
 # Remember to replace "46adb587" with your actual ID of the snapshot you want to restore
-restic restore 46adb587 --repo /srv/backups/pterodactyl --target /var/lib/docker/volumes/pterodactyl_app/_data
+restic restore 46adb587 -r /srv/backups/pterodactyl -t /var/lib/docker/volumes/pterodactyl_app/_data
 docker compose -f /srv/pterodactyl/docker-compose.yml up -d
 ```
 
