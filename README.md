@@ -163,6 +163,6 @@ docker compose -f /srv/pterodactyl/docker-compose.yml up -d
 <!-- copyright footer -->
 <br/><br/>
 <p align="center">
-  $\color{#4b4950}{\textsf{© 2024 Emma (prpl.wtf) and Loki}}$
+  $\color{#4b4950}{\textsf{© 2024-2025 Emma (prpl.wtf) and Loki}}$
   <br/><br/><img src="https://github.com/user-attachments/assets/15aa92e8-cef3-420e-ae8e-d0cd83263925"/>
 </p>
