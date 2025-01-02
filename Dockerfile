@@ -61,5 +61,19 @@ RUN mkdir -p /blueprint_extensions /app
 COPY .helpers/listen.sh /listen.sh
 RUN chmod +x /listen.sh
 
-# Set CMD to run the listen script in the background and start supervisord
-CMD /listen.sh & exec supervisord -n -c /etc/supervisord.conf
+# Append listener and seeder to supervisord
+RUN echo "" >> /etc/supervisord.conf && \
+    cat >> /etc/supervisord.conf <<'EOF'
+[program:database-seeder]
+command=/bin/bash -c 'while ! [[ $(/usr/local/bin/php /app/artisan db:monitor) =~ OK ]]; do /bin/sleep 5; done && /usr/local/bin/php /app/artisan db:seed --class=BlueprintSeeder --force'
+user=nginx
+autostart=true
+autorestart=false
+startsecs=0
+
+[program:listener]
+command=/listen.sh
+user=root
+autostart=true
+autorestart=true
+EOF
