@@ -44,9 +44,11 @@ RUN wget $(curl -s https://api.github.com/repos/BlueprintFramework/framework/rel
 # Required for tput (used in blueprint.sh)
 ENV TERM=xterm
 
-# Configure user and permissions for Blueprint
-RUN echo 'OWNERSHIP="nginx:nginx"' > .blueprintrc
-RUN echo 'WEBUSER="nginx"' >> .blueprintrc
+# Make blueprint.sh set ownership to nginx:nginx
+RUN sed -i -E \
+    -e "s|OWNERSHIP=\"www-data:www-data\" #;|OWNERSHIP=\"nginx:nginx\" #;|g" \
+    -e "s|WEBUSER=\"www-data\" #;|WEBUSER=\"nginx\" #;|g" \
+    blueprint.sh
 
 # Make the script executable and run it
 RUN chmod +x blueprint.sh \
