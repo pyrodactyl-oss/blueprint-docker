@@ -44,18 +44,15 @@ RUN wget $(curl -s https://api.github.com/repos/BlueprintFramework/framework/rel
 # Required for tput (used in blueprint.sh)
 ENV TERM=xterm
 
-# Make blueprint.sh set ownership to nginx:nginx
-RUN sed -i -E \
-    -e "s|OWNERSHIP=\"www-data:www-data\" #;|OWNERSHIP=\"nginx:nginx\" #;|g" \
-    -e "s|WEBUSER=\"www-data\" #;|WEBUSER=\"nginx\" #;|g" \
-    blueprint.sh
+# Set Blueprint user and permissions
+COPY .helpers/.blueprintrc /app/.blueprintrc
 
 # Make the script executable and run it
 RUN chmod +x blueprint.sh \
     && bash blueprint.sh
 
 # Create directory for blueprint extensions
-RUN mkdir -p /blueprint_extensions /app
+RUN mkdir -p /blueprint_extensions
 
 # Copy listen.sh from .helpers directory
 COPY .helpers/listen.sh /listen.sh

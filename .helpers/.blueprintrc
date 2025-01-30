@@ -1,0 +1,2 @@
+OWNERSHIP="nginx:nginx"
+WEBUSER="nginx"

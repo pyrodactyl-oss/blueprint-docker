@@ -4,7 +4,7 @@ set -euo pipefail
 trap 'echo "Interrupted"; exit 1' INT TERM
 
 # Initial sync
-rsync -av --exclude=".blueprint" --include="*.blueprint*" --exclude="*" --delete "/blueprint_extensions/" "/app/"
+rsync -av --exclude=".blueprint" --include="*.blueprint" --exclude="*" --delete "/blueprint_extensions/" "/app/"
 
 # Continuous monitor task
 inotifywait -m -q \
