@@ -23,7 +23,8 @@ RUN apk update && apk add --no-cache \
     linux-headers \
     ncurses \
     rsync \
-    inotify-tools
+    inotify-tools \
+    sed
 
 # Install yarn and Pterodactyl dependencies, as well as update browserlist
 RUN for i in {1..3}; do \
