@@ -50,6 +50,11 @@
     backup_directory: /srv/pterodactyl/backups
     tmp_directory: /tmp/pterodactyl
     ```
+### Creating your first user
+- ``cd`` into the directory containing your compose file, e.g. ``cd /srv/pterodactyl``
+- ```bash
+  docker compose exec panel php artisan p:user:make
+  ```
 
 ### Uploading extensions
 Extensions must be placed/dragged into the `extensions` folder.
