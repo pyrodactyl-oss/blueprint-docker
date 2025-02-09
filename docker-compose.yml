@@ -98,7 +98,7 @@ services:
       - "${BASE_DIR}/nginx/:/etc/nginx/http.d/"
       - "${BASE_DIR}/certs/:/etc/letsencrypt/live:ro"
       - "${BASE_DIR}/logs/:/app/storage/logs"
-      - "/var/log/nginx:/var/log/nginx"
+      - "${BASE_DIR}/nginx/logs:/var/log/nginx"
       - "${BASE_DIR}/extensions/:/blueprint_extensions"
       - "app:/app"
     environment:

@@ -45,8 +45,10 @@ RUN wget $(curl -s https://api.github.com/repos/BlueprintFramework/framework/rel
 # Required for tput (used in blueprint.sh)
 ENV TERM=xterm
 
-# Set Blueprint user and permissions
-COPY .helpers/.blueprintrc /app/.blueprintrc
+# Copy helpers directory - has to be done before running blueprint.sh for .blueprintrc to set correct permisisons
+COPY .helpers /helpers
+RUN mv /helpers/.blueprintrc /app/.blueprintrc
+RUN chmod +x /helpers/*.sh
 
 # Make the script executable and run it
 RUN chmod +x blueprint.sh \
@@ -55,23 +57,28 @@ RUN chmod +x blueprint.sh \
 # Create directory for blueprint extensions
 RUN mkdir -p /blueprint_extensions
 
-# Copy listen.sh from .helpers directory
-COPY .helpers/listen.sh /listen.sh
-RUN chmod +x /listen.sh
-
-# Append listener and seeder to supervisord
+# Append our additions to supervisord
 RUN echo "" >> /etc/supervisord.conf && \
     cat >> /etc/supervisord.conf <<'EOF'
+
 [program:database-seeder]
-command=/bin/bash -c 'while ! [[ $(/usr/local/bin/php /app/artisan db:monitor) =~ OK ]]; do /bin/sleep 5; done && /usr/local/bin/php /app/artisan db:seed --class=BlueprintSeeder --force'
+command=/helpers/seeder.sh
 user=nginx
 autostart=true
 autorestart=false
 startsecs=0
 
 [program:listener]
-command=/listen.sh
+command=/helpers/listen.sh
 user=root
 autostart=true
 autorestart=true
+
+[program:fix-bind-mount-perms]
+command=/helpers/permissions.sh
+user=root
+autostart=true
+autorestart=false
+startsecs=0
+priority=1
 EOF
