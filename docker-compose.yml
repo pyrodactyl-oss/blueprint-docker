@@ -73,7 +73,7 @@ services:
       # to allow database connections from servers at the 172.18.0.1 address
       # Un-commenting pterodactyl_nw will also allow game servers to connect to the database at the address "database"
   cache:
-    image: valkey:alpine
+    image: valkey/valkey:alpine
     restart: always
     command: >
       --requirepass "${VALKEY_PASS}"
