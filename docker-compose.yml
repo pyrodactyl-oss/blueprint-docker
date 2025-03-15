@@ -7,7 +7,7 @@ x-common:
     MYSQL_ROOT_PASSWORD: "${MARIADB_ROOT_PASS}"
   cache:
     &redis-environment
-    REDIS_PASSWORD: &redis-password "${REDIS_PASS}"
+    REDIS_PASSWORD: &redis-password "${VALKEY_PASS}"
   panel:
     &panel-environment
     APP_URL: "${FQDN}"
@@ -47,7 +47,7 @@ x-common:
 #
 services:
   database:
-    image: mariadb:11.5
+    image: mariadb:11.8
     restart: always
     command: --default-authentication-plugin=mysql_native_password --max-connections=2000
     volumes:
@@ -73,12 +73,14 @@ services:
       # to allow database connections from servers at the 172.18.0.1 address
       # Un-commenting pterodactyl_nw will also allow game servers to connect to the database at the address "database"
   cache:
-    image: redis:alpine
+    image: valkey:alpine
     restart: always
     command: >
-      --requirepass "${REDIS_PASS}"
+      --requirepass "${VALKEY_PASS}"
+    environment:
+      REDISCLI_AUTH: "${VALKEY_PASS}"
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "valkey-cli", "ping"]
       interval: 30s
       timeout: 10s
       retries: 5
