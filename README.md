@@ -36,7 +36,7 @@
   - ```
     root_directory: /var/lib/pterodactyl
     log_directory: /var/log/pterodactyl
-    data: /srv/pterodactyl/volumes
+    data: /srv/pterodactyl/wings/servers
     archive_directory: /var/lib/pterodactyl/archives
     backup_directory: /var/lib/pterodactyl/backups
     tmp_directory: /tmp/pterodactyl
@@ -45,7 +45,7 @@
   - ```
     root_directory: /srv/pterodactyl
     log_directory: /srv/pterodactyl/wings/logs
-    data: /srv/pterodactyl/volumes
+    data: /srv/pterodactyl/wings/servers
     archive_directory: /srv/pterodactyl/archives
     backup_directory: /srv/pterodactyl/backups
     tmp_directory: /tmp/pterodactyl
