@@ -28,8 +28,8 @@ x-common:
     PTERODACTYL_CLIENT_ALLOCATIONS_RANGE_END: "${AUTO_ALLOCATION_END_PORT}"
   mail:
     &mail-environment
-    MAIL_FROM: "no-reply${DOMAIN}"
-    MAIL_FROM_NAME: "no-reply${DOMAIN}"
+    MAIL_FROM_ADDRESS: "no-reply.${DOMAIN}"
+    MAIL_FROM_NAME: "${APP_NAME}"
     MAIL_DRIVER: "${MAIL_DRIVER}"
     MAIL_HOST: "${SMTP_SERVER}"
     MAIL_PORT: "${SMTP_PORT}"
