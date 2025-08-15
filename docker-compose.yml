@@ -124,7 +124,8 @@ services:
       retries: 5
       start_period: 30s
     networks:
-      - pterodactyl_stack
+      pterodactyl_stack:
+        ipv4_address: 172.21.0.4
   wings:
     # See https://github.com/Loki-101/cwings for info about cwings
     image: ghcr.io/loki-101/cwings:v1.11.13
@@ -153,17 +154,16 @@ services:
       retries: 5
       start_period: 30s
     networks:
-      - pterodactyl_stack
+      pterodactyl_stack:
+        ipv4_address: 172.21.0.5
 
 networks:
   pterodactyl_stack:
     driver: bridge
-    aliases:
-      - blueprint.local
     ipam:
       driver: default
       config:
-        - subnet: "172.20.0.0/24"
+        - subnet: "172.21.0.0/24"
 #  pterodactyl_nw:
 #    external: true
 
