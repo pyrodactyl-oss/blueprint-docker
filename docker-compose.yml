@@ -118,7 +118,7 @@ services:
       HASHIDS_SALT: "${HASH_SALT}"
       HASHIDS_LENGTH: 8
     healthcheck:
-      test: ["CMD", "curl", "http://localhost:${PANEL_PORT}"]
+      test: ["CMD", "curl", "http://localhost:80"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -147,7 +147,7 @@ services:
       - "/tmp/pterodactyl/:/tmp/pterodactyl/"
       - "${BASE_DIR}/certs:/etc/letsencrypt/live:ro"
     healthcheck:
-      test: ["CMD", "curl", "http://localhost:${WINGS_PORT}"]
+      test: ["CMD", "curl", "http://localhost:8080"]
       interval: 30s
       timeout: 10s
       retries: 5
