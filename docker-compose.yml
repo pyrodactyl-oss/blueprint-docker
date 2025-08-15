@@ -131,7 +131,7 @@ services:
     restart: always
     ports:
       - "${WINGS_PORT}:${WINGS_PORT}"
-      - "2022:2022"
+      - "${WINGS_SFTP_PORT}:${WINGS_SFTP_PORT}"
     tty: true
     environment:
       TZ: "${TIMEZONE}"
