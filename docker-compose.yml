@@ -130,8 +130,8 @@ services:
     image: ghcr.io/loki-101/cwings:v1.11.13
     restart: always
     ports:
-      - "${WINGS_PORT}:8080"
-      - "${WINGS_SFTP_PORT}:2022"
+      - "${WINGS_PORT}:${WINGS_PORT}"
+      - "${WINGS_SFTP_PORT}:${WINGS_SFTP_PORT}"
     tty: true
     environment:
       TZ: "${TIMEZONE}"
@@ -147,7 +147,7 @@ services:
       - "/tmp/pterodactyl/:/tmp/pterodactyl/"
       - "${BASE_DIR}/certs:/etc/letsencrypt/live:ro"
     healthcheck:
-      test: ["CMD", "curl", "http://localhost:8080"]
+      test: ["CMD", "curl", "http://localhost:${WINGS_PORT}"]
       interval: 30s
       timeout: 10s
       retries: 5
