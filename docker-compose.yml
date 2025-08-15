@@ -158,6 +158,8 @@ services:
 networks:
   pterodactyl_stack:
     driver: bridge
+    aliases:
+      - blueprint.local
     ipam:
       driver: default
       config:
