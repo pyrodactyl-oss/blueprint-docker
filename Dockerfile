@@ -24,8 +24,13 @@ RUN apk update && apk add --no-cache \
     ncurses \
     rsync \
     inotify-tools \
-    sed
+    sed \
+    musl-locales
 
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+
+RUN printf 'export LANG=C.UTF-8\nexport LC_ALL=C.UTF-8\n' > /etc/profile.d/locale.sh
 # Install yarn and Pterodactyl dependencies, as well as update browserlist
 RUN for i in {1..3}; do \
         npm install -g yarn && \
