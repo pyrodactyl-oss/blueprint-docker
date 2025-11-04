@@ -1,5 +1,5 @@
 ARG VERSION_TAG
-FROM --platform=$TARGETOS/$TARGETARCH ghcr.io/pterodactyl/panel:${VERSION_TAG}
+FROM --platform=$TARGETOS/$TARGETARCH ghcr.io/pyrohost/pyrodactyl:${VERSION_TAG}
 
 # Set the Working Directory
 WORKDIR /app
@@ -31,7 +31,7 @@ ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 
 RUN printf 'export LANG=C.UTF-8\nexport LC_ALL=C.UTF-8\n' > /etc/profile.d/locale.sh
-# Install yarn and Pterodactyl dependencies, as well as update browserlist
+# Install yarn and pyrodactyl dependencies, as well as update browserlist
 RUN for i in {1..3}; do \
         npm install -g yarn && \
         yarn --network-timeout 120000 && \
@@ -42,7 +42,7 @@ RUN for i in {1..3}; do \
     done
 
 # Download and unzip the latest Blueprint release
-RUN wget $(curl -s https://api.github.com/repos/BlueprintFramework/framework/releases/latest | grep 'browser_download_url' | cut -d '"' -f 4) -O blueprint.zip \
+RUN wget $(curl -s https://api.github.com/repos/pyrodactyl-oss/blueprint-framework/releases/latest | grep 'browser_download_url' | cut -d '"' -f 4) -O blueprint.zip \
     && unzip -o blueprint.zip -d /app \
     && touch /.dockerenv \
     && rm blueprint.zip

@@ -88,7 +88,7 @@ services:
     networks:
       - pterodactyl_stack
   panel:
-    image: ghcr.io/blueprintframework/blueprint:v1.11.11
+    image: ghcr.io/pyrodactyl-oss/blueprint:latest
     restart: always
     ports:
       - "${PANEL_PORT}:${PANEL_PORT}"

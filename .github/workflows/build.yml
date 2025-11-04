@@ -48,9 +48,9 @@ jobs:
         shell: bash
         run: |
           if [[ "${{ matrix.version }}" == "${{ env.LATEST_VERSION }}" ]]; then
-            TAGS="ghcr.io/blueprintframework/blueprint:latest,ghcr.io/blueprintframework/blueprint:${{ matrix.version }}"
+            TAGS="ghcr.io/pyrodactyl-oss/blueprint:latest,ghcr.io/pyrodactyl-oss/blueprint:${{ matrix.version }}"
           else
-            TAGS="ghcr.io/blueprintframework/blueprint:${{ matrix.version }}"
+            TAGS="ghcr.io/pyrodactyl-oss/blueprint:${{ matrix.version }}"
           fi
           echo "VERSION_TAG=${{ matrix.version }}" >> $GITHUB_ENV
           echo "TAGS=$TAGS" >> $GITHUB_ENV

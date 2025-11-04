@@ -38,16 +38,16 @@ services:
     restart: always
     command: --default-authentication-plugin=mysql_native_password
     volumes:
-      - "/srv/pterodactyl/database:/var/lib/mysql"
+      - "/srv/pyrodactyl/database:/var/lib/mysql"
     environment:
       <<: *db-environment
       MYSQL_DATABASE: "panel"
-      MYSQL_USER: "pterodactyl"
+      MYSQL_USER: "pyrodactyl"
   cache:
     image: redis:alpine
     restart: always
   panel:
-    image: ghcr.io/blueprintframework/blueprint:v1.11.11
+    image: ghcr.io/pyrodactyl-oss/blueprint:latest
     restart: always
     ports:
       - "80:80"
@@ -56,11 +56,11 @@ services:
       - database
       - cache
     volumes:
-      - "/srv/pterodactyl/var/:/app/var/"
-      - "/srv/pterodactyl/nginx/:/etc/nginx/http.d/"
-      - "/srv/pterodactyl/certs/:/etc/letsencrypt/"
-      - "/srv/pterodactyl/logs/:/app/storage/logs"
-      - "/srv/pterodactyl/extensions/:/blueprint_extensions"
+      - "/srv/pyrodactyl/var/:/app/var/"
+      - "/srv/pyrodactyl/nginx/:/etc/nginx/http.d/"
+      - "/srv/pyrodactyl/certs/:/etc/letsencrypt/"
+      - "/srv/pyrodactyl/logs/:/app/storage/logs"
+      - "/srv/pyrodactyl/extensions/:/blueprint_extensions"
       - "app:/app"
     environment:
       <<: [*panel-environment, *mail-environment]

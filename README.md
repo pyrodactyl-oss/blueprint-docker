@@ -20,7 +20,7 @@
   > Note on the debian 12 based os the path is /boot/firmware/cmdline.txt
 
 ### What is the difference between docker-compose.yml and classic-docker-compose.yml?
-- classic-docker-compose.yml stays as close to the stock Pterodactyl compose file as possible
+- classic-docker-compose.yml stays as close to the stock pyrodactyl compose file as possible
   - This means it still has the obsolete "version" attribute, has no health checks, and does not use a .env file for configuration
   - This file is simpler to look at and understand, mostly because it doesn't give you the same level of control and information as the recommended docker-compose.yml file
 - docker-compose.yml (recommended) can and has been improved over time
@@ -30,28 +30,28 @@
 - One thing to be prepared for is that Wings uses the host system's Docker Engine through the mounted socket; it does not use Docker in Docker.
 - What this means is the directory where you store your data, if you wish to customize it, must be set to the same value for both host and container in the mounts, and then you must make the values in your config.yml match; otherwise the Wings container would see one directory, then when a new container is created that isn't affected by this docker-compose.yml's mounts, it won't see the same directory. Here's an example:
   - Mount in docker-compose.yml: ``"${BASE_DIR}/:${BASE_DIR}/"``
-  - Let's say, for the purposes of this example, that you set ``BASE_DIR`` in your .env file to **/srv/pterodactyl**. If you want to mount Wings server data in another location, just add any other mount, making sure both sides of the mount match.
+  - Let's say, for the purposes of this example, that you set ``BASE_DIR`` in your .env file to **/srv/pyrodactyl**. If you want to mount Wings server data in another location, just add any other mount, making sure both sides of the mount match.
   - Now when you create your node, you would select somewhere inside the mount you made for **Daemon Server File Directory**, e.g. /srv/pterodacty/wings/servers
   - After Wings runs successfully the first time, more options will appear in your **config.yml** file. They will look like this:
   - ```
-    root_directory: /var/lib/pterodactyl
-    log_directory: /var/log/pterodactyl
-    data: /srv/pterodactyl/wings/servers
-    archive_directory: /var/lib/pterodactyl/archives
-    backup_directory: /var/lib/pterodactyl/backups
-    tmp_directory: /tmp/pterodactyl
+    root_directory: /var/lib/pyrodactyl
+    log_directory: /var/log/pyrodactyl
+    data: /srv/pyrodactyl/wings/servers
+    archive_directory: /var/lib/pyrodactyl/archives
+    backup_directory: /var/lib/pyrodactyl/backups
+    tmp_directory: /tmp/pyrodactyl
     ```
-  - As you can see, only **data** gets set to your configured location. You can make the others match by changing **/var/lib/pterodactyl** to match your base directory, again for the example **/srv/pterodactyl**. Optionally, you can change the log location too if you'd like to keep ***everything*** possible inside one directory, which is one of the benefits of using containers. Once you're done, it may look like:
+  - As you can see, only **data** gets set to your configured location. You can make the others match by changing **/var/lib/pyrodactyl** to match your base directory, again for the example **/srv/pyrodactyl**. Optionally, you can change the log location too if you'd like to keep ***everything*** possible inside one directory, which is one of the benefits of using containers. Once you're done, it may look like:
   - ```
-    root_directory: /srv/pterodactyl
-    log_directory: /srv/pterodactyl/wings/logs
-    data: /srv/pterodactyl/wings/servers
-    archive_directory: /srv/pterodactyl/archives
-    backup_directory: /srv/pterodactyl/backups
-    tmp_directory: /tmp/pterodactyl
+    root_directory: /srv/pyrodactyl
+    log_directory: /srv/pyrodactyl/wings/logs
+    data: /srv/pyrodactyl/wings/servers
+    archive_directory: /srv/pyrodactyl/archives
+    backup_directory: /srv/pyrodactyl/backups
+    tmp_directory: /tmp/pyrodactyl
     ```
 ### Creating your first user
-- ``cd`` into the directory containing your compose file, e.g. ``cd /srv/pterodactyl``
+- ``cd`` into the directory containing your compose file, e.g. ``cd /srv/pyrodactyl``
 - ```bash
   docker compose exec panel php artisan p:user:make
   ```
@@ -68,15 +68,15 @@ docker compose exec panel blueprint (arguments)
 #### We recommend setting an alias so you can interact with Blueprint the same way you would in the non-Docker version (If you have your compose file in a different place, adjust accordingly:
 ```bash
 # Set alias for current session
-alias blueprint="docker compose -f /srv/pterodactyl/docker-compose.yml exec panel blueprint"
+alias blueprint="docker compose -f /srv/pyrodactyl/docker-compose.yml exec panel blueprint"
 # Append to the end of your .bashrc file to make it persistent
-echo 'alias blueprint="docker compose -f /srv/pterodactyl/docker-compose.yml exec panel blueprint"' >> ~/.bashrc
+echo 'alias blueprint="docker compose -f /srv/pyrodactyl/docker-compose.yml exec panel blueprint"' >> ~/.bashrc
 ```
 
 ### Example of installing an extension
 Here's a quick example showcasing how you would go about installing extensions on the Docker version of Blueprint. Note that your experience can differ for every extension.
   1. [Find an extension](https://blueprint.zip/browse) you would like to install and look for a file with the `.blueprint` file extension.
-  2. Drag/upload the `example.blueprint` file over/onto to your extensions folder, i.e. by default `/srv/pterodactyl/extensions`.
+  2. Drag/upload the `example.blueprint` file over/onto to your extensions folder, i.e. by default `/srv/pyrodactyl/extensions`.
   3. Install the extension through the Blueprint command line tool:
      ```bash
      docker compose exec panel blueprint -i example
@@ -86,7 +86,7 @@ Here's a quick example showcasing how you would go about installing extensions o
      blueprint -i example
      ```
 
-#### So, you installed your first extension. Congratulations! Blueprint is now keeping persistent data inside the `pterodactyl_app` volume, so you'll want to start backing that volume up regularly.
+#### So, you installed your first extension. Congratulations! Blueprint is now keeping persistent data inside the `pyrodactyl_app` volume, so you'll want to start backing that volume up regularly.
 
 ### First, we'll install Restic to handle backups
 Why Restic? Compression, de-duplication, and incremental backups. Save on space compared to simply archiving the directory each time.
@@ -102,15 +102,15 @@ The package name is usually `restic`, e.g.
 
 #### Make a directory and script for backups
 ```bash
-mkdir -p /srv/backups/pterodactyl
+mkdir -p /srv/backups/pyrodactyl
 export RESTIC_PASSWORD="CHANGE_ME"
-restic init --repo /srv/backups/pterodactyl
+restic init --repo /srv/backups/pyrodactyl
 cat <<EOF > /srv/backups/backup.sh
 #!/bin/bash
-docker compose -f /srv/pterodactyl/docker-compose.yml down panel
-cd /var/lib/docker/volumes/pterodactyl_app/_data
-RESTIC_PASSWORD="${RESTIC_PASSWORD}" restic backup . -r /srv/backups/pterodactyl
-docker compose -f /srv/pterodactyl/docker-compose.yml up -d panel
+docker compose -f /srv/pyrodactyl/docker-compose.yml down panel
+cd /var/lib/docker/volumes/pyrodactyl_app/_data
+RESTIC_PASSWORD="${RESTIC_PASSWORD}" restic backup . -r /srv/backups/pyrodactyl
+docker compose -f /srv/pyrodactyl/docker-compose.yml up -d panel
 EOF
 chmod +x /srv/backups/backup.sh
 ```
@@ -121,17 +121,17 @@ chmod +x /srv/backups/backup.sh
 ```
 
 #### Well, great. I have daily backups now, and they're set to keep at most 30 backups at a time. How can I restore from one of them?
-You can list snapshots with ``restic snapshots --repo /srv/backups/pterodactyl``
+You can list snapshots with ``restic snapshots --repo /srv/backups/pyrodactyl``
 You're looking for a value for **ID** that looks something like ``46adb587``. **Time** will be right next to each ID, so you can see what day your backups are from.
 
 #### Once you've determined which snapshot you want to restore, stop your compose stack, restore your data, and start your stack again
 ```bash
-docker compose -f /srv/pterodactyl/docker-compose.yml down
+docker compose -f /srv/pyrodactyl/docker-compose.yml down
 # Clear the directory so the restoration will be clean
-rm -rf /var/lib/docker/volumes/pterodactyl_app/_data/.[!.]* /var/lib/docker/volumes/pterodactyl_app/_data/*
+rm -rf /var/lib/docker/volumes/pyrodactyl_app/_data/.[!.]* /var/lib/docker/volumes/pyrodactyl_app/_data/*
 # Remember to replace "46adb587" with your actual ID of the snapshot you want to restore
-restic restore 46adb587 -r /srv/backups/pterodactyl -t /var/lib/docker/volumes/pterodactyl_app/_data
-docker compose -f /srv/pterodactyl/docker-compose.yml up -d
+restic restore 46adb587 -r /srv/backups/pyrodactyl -t /var/lib/docker/volumes/pyrodactyl_app/_data
+docker compose -f /srv/pyrodactyl/docker-compose.yml up -d
 ```
 
 # Updating Blueprint in Docker
@@ -143,10 +143,10 @@ docker compose -f /srv/pterodactyl/docker-compose.yml up -d
   ```
 - If you have not
   ```bash
-  docker compose -f /srv/pterodactyl/docker-compose.yml exec panel blueprint -upgrade
+  docker compose -f /srv/pyrodactyl/docker-compose.yml exec panel blueprint -upgrade
   ```
 
-## Option 2: Update both Blueprint and Pterodactyl Panel
+## Option 2: Update both Blueprint and pyrodactyl Panel
 - This guide operates under the assumption that individual extension/theme authors have chosen to store any persistent data such as settings in the database. If they have not done this... there isn't any specific place extension data is meant to be stored, so the data could be anywhere. You'll need to ask them if there is any persistent data stored anywhere that you have to back up before updating.
 - Go to the directory of your docker-compose.yml file
 - ```bash
