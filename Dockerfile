@@ -37,6 +37,7 @@ RUN for i in {1..3}; do \
         npm install -g yarn && \
         # yarn --network-timeout 120000 && \
         pnpm install && \
+        pnpm approve-builds && \
         npx update-browserslist-db@latest && \
         break || \
         echo "Attempt $i failed! Retrying..." && \
@@ -59,6 +60,7 @@ RUN chmod +x /helpers/*.sh
 
 # Install extra deps
 RUN pnpm install webpack classnames
+RUN pnpm approve-builds
 
 # Make the script executable and run it
 RUN chmod +x blueprint.sh \
