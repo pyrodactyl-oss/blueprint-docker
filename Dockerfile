@@ -32,16 +32,10 @@ ENV LC_ALL=C.UTF-8
 
 RUN printf 'export LANG=C.UTF-8\nexport LC_ALL=C.UTF-8\n' > /etc/profile.d/locale.sh
 # Install yarn and pyrodactyl dependencies, as well as update browserlist
-RUN for i in {1..3}; do \
-        npm install -g pnpm && \
-        npm install -g yarn && \
-        # yarn --network-timeout 120000 && \
-        pnpm install --allow-all-builds && \
-        npx update-browserslist-db@latest && \
-        break || \
-        echo "Attempt $i failed! Retrying..." && \
-        sleep 10; \
-    done
+RUN npm install -g pnpm yarn \
+  && pnpm install --allow-all-builds \
+  && npx update-browserslist-db@latest
+
 
 # Download and unzip the latest Blueprint release
 RUN wget $(curl -s https://api.github.com/repos/pyrodactyl-oss/blueprint-framework/releases/latest | grep 'browser_download_url' | cut -d '"' -f 4) -O blueprint.zip \
