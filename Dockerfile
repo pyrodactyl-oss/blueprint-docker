@@ -55,6 +55,9 @@ COPY .helpers /helpers
 RUN mv /helpers/.blueprintrc /app/.blueprintrc
 RUN chmod +x /helpers/*.sh
 
+# Install new Deps
+RUN yarn --network-timeout 120000
+
 # Make the script executable and run it
 RUN chmod +x blueprint.sh \
     && bash blueprint.sh
