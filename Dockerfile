@@ -31,10 +31,10 @@ ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 
 RUN printf 'export LANG=C.UTF-8\nexport LC_ALL=C.UTF-8\n' > /etc/profile.d/locale.sh
-# Install yarn and pyrodactyl dependencies, as well as update browserlist
+# Install pnpm and pyrodactyl dependencies, as well as update browserlist
 RUN for i in {1..3}; do \
-        npm install -g yarn && \
-        yarn --network-timeout 120000 && \
+        npm install -g pnpm && \
+        pnpm --network-timeout 120000 && \
         npx update-browserslist-db@latest && \
         break || \
         echo "Attempt $i failed! Retrying..." && \
@@ -56,7 +56,7 @@ RUN mv /helpers/.blueprintrc /app/.blueprintrc
 RUN chmod +x /helpers/*.sh
 
 # Install new Deps
-RUN yarn --network-timeout 120000
+RUN pnpm install
 
 # Make the script executable and run it
 RUN chmod +x blueprint.sh \
