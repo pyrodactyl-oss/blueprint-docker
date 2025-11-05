@@ -33,7 +33,7 @@ ENV LC_ALL=C.UTF-8
 RUN printf 'export LANG=C.UTF-8\nexport LC_ALL=C.UTF-8\n' > /etc/profile.d/locale.sh
 # Install yarn and pyrodactyl dependencies, as well as update browserlist
 RUN npm install -g pnpm yarn \
-  && pnpm install --allow-all-builds \
+  && pnpm install --dangerously-allow-all-builds \
   && npx update-browserslist-db@latest
 
 
@@ -52,7 +52,7 @@ RUN mv /helpers/.blueprintrc /app/.blueprintrc
 RUN chmod +x /helpers/*.sh
 
 # Install extra deps
-RUN pnpm install webpack classnames --allow-all-builds
+RUN pnpm install webpack classnames --dangerously-allow-all-builds
 
 # Make the script executable and run it
 RUN chmod +x blueprint.sh \
